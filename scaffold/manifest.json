@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Verdux DevTools Experiment",
+  "version": "0.0.1",
+  "description": "DevTools for Verdux state management library",
+  "icons": {
+    "48": "icons/verdux-48.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*", "<all_urls>"],
+      "js": ["content-script.js"]
+    }
+  ],
+  "devtools_page": "devtools-page.html",
+  "permissions": ["tabs", "activeTab"]
+}
