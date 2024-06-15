@@ -10,16 +10,16 @@ const slice = createSlice({
 export const vertexDetailsVertexConfig = rootVertexConfig
   .configureDownstreamVertex({
     slice,
-    upstreamFields: ["verduxGraph", "focusedVertexId"],
+    upstreamFields: ["graphStructure", "lastRunOutput", "focusedVertexId"],
   })
-  .computeFromFields(["verduxGraph", "focusedVertexId"], {
-    focusedVertex: ({ verduxGraph, focusedVertexId }) =>
+  .computeFromFields(["graphStructure", "lastRunOutput", "focusedVertexId"], {
+    focusedVertex: ({ graphStructure, lastRunOutput, focusedVertexId }) =>
       !focusedVertexId
         ? undefined
         : {
-            name: verduxGraph.structure.vertices.filter(
+            name: graphStructure.vertices.filter(
               (_) => _.id === focusedVertexId
             )[0].name,
-            state: verduxGraph.state.vertices[focusedVertexId],
+            fields: lastRunOutput.fieldsByVertexId[focusedVertexId],
           },
   });

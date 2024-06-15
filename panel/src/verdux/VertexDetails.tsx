@@ -17,10 +17,10 @@ export const VertexDetails = loadableComponent(
       <div>
         <h3>Fields:</h3>
         {focusedVertex &&
-          keys(focusedVertex.state.fields).map((fieldName) => (
+          keys(focusedVertex.fields).map((fieldName) => (
             <FieldDetails
               name={fieldName}
-              state={focusedVertex.state.fields[fieldName]}
+              state={focusedVertex.fields[fieldName]}
             />
           ))}
       </div>

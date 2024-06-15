@@ -1,22 +1,32 @@
+import { keys } from "ramda";
+import { SerializedGraphRunOutput, SerializedGraphStructure } from "verdux";
+import { colorByStatus } from "../common/colorByStatus";
 import { computeDagreGraph } from "../dagre/computeDagreGraph";
-import { VerduxGraphSnapshot } from "../verdux/VerduxGraphSnapshot";
 import { VertexId } from "../verdux/VertexId";
 import { FlowEdge, FlowGraph, FlowNode } from "./FlowGraph";
-import { colorByStatus } from "../common/colorByStatus";
 
 export const computeFlowGraph = (
-  verduxGraph: VerduxGraphSnapshot
+  structure: SerializedGraphStructure,
+  runOutput: SerializedGraphRunOutput
 ): FlowGraph => {
-  const dagreGraph = computeDagreGraph(verduxGraph.structure);
+  const dagreGraph = computeDagreGraph(structure);
 
   const vertexHasDownstream: Record<VertexId, true | undefined> = {} as any;
-  verduxGraph.structure.edges.forEach((edge) => {
+  structure.edges.forEach((edge) => {
     vertexHasDownstream[edge.upstream] = true;
   });
 
-  const nodes = verduxGraph.structure.vertices.map((vertex): FlowNode => {
+  const nodes = structure.vertices.map((vertex): FlowNode => {
     const { x, y } = dagreGraph.node(vertex.id);
-    const state = verduxGraph.state.vertices[vertex.id];
+    const fields = runOutput.fieldsByVertexId[vertex.id];
+    // TODO get status from verdux utility function (to export)
+    const status = keys(fields).some(
+      (field) => fields[field].status === "error"
+    )
+      ? "error"
+      : keys(fields).some((field) => fields[field].status === "loading")
+      ? "loading"
+      : "loaded";
     return {
       id: vertex.id,
       data: { label: vertex.name },
@@ -27,13 +37,13 @@ export const computeFlowGraph = (
         ? undefined
         : "output",
       style: {
-        borderColor: colorByStatus[state?.status],
+        borderColor: colorByStatus[status],
         borderWidth: 2,
       },
     };
   });
 
-  const edges = verduxGraph.structure.edges.map((edge): FlowEdge => {
+  const edges = structure.edges.map((edge): FlowEdge => {
     return {
       id: edge.upstream + "-" + edge.downstream,
       source: edge.upstream,

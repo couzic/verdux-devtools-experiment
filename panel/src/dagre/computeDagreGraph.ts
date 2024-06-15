@@ -1,8 +1,8 @@
 import { graphlib, layout } from "@dagrejs/dagre";
-import { VerduxGraphStructure } from "../verdux/VerduxGraphStructure";
+import { SerializedGraphStructure } from "verdux";
 
 export const computeDagreGraph = (
-  verduxGraph: VerduxGraphStructure
+  verduxGraph: SerializedGraphStructure
 ): graphlib.Graph => {
   const width = 172;
   const height = 36;

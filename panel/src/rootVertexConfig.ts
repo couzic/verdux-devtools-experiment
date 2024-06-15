@@ -1,28 +1,45 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { configureRootVertex } from "verdux";
-import { VerduxGraphSnapshot } from "./verdux/VerduxGraphSnapshot";
-import { VerduxGraphState } from "./verdux/VerduxGraphState";
-import { VerduxGraphStructure } from "./verdux/VerduxGraphStructure";
+import {
+  SerializedGraphRunOutput,
+  SerializedGraphStructure,
+  configureRootVertex,
+} from "verdux";
 import { VertexId } from "./verdux/VertexId";
+
+const initialGraphStructure: SerializedGraphStructure = {
+  vertices: [],
+  edges: [],
+};
+
+const initialGraphRun: SerializedGraphRunOutput = {
+  action: undefined,
+  initialRun: false,
+  reactions: [],
+  fieldsReactions: [],
+  reduxStateByVertexId: {},
+  fieldsByVertexId: {},
+  changedFieldsByVertexId: {},
+};
 
 const slice = createSlice({
   name: "root",
   initialState: {
-    verduxGraph: {
-      structure: { vertices: [], edges: [] },
-      state: { vertices: {} as any },
-    } as VerduxGraphSnapshot,
+    graphStructure: initialGraphStructure,
+    lastRunOutput: initialGraphRun,
     focusedVertexId: undefined as string | undefined,
   },
   reducers: {
-    setVerduxGraphStructure: (
+    setGraphStructure: (
       state,
-      action: PayloadAction<VerduxGraphStructure>
+      action: PayloadAction<SerializedGraphStructure>
     ) => {
-      state.verduxGraph.structure = action.payload;
+      state.graphStructure = action.payload;
     },
-    setVerduxGraphState: (state, action: PayloadAction<VerduxGraphState>) => {
-      state.verduxGraph.state = action.payload;
+    setLastRunOutput: (
+      state,
+      action: PayloadAction<SerializedGraphRunOutput>
+    ) => {
+      state.lastRunOutput = action.payload;
     },
     focusVertex: (state, action: PayloadAction<VertexId>) => {
       state.focusedVertexId = action.payload;
@@ -34,5 +51,5 @@ export const rootVertexConfig = configureRootVertex({
   slice,
 });
 
-export const { setVerduxGraphStructure, setVerduxGraphState, focusVertex } =
+export const { setGraphStructure, setLastRunOutput, focusVertex } =
   slice.actions;

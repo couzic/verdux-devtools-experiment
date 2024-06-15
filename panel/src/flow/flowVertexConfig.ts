@@ -11,8 +11,9 @@ const slice = createSlice({
 export const flowVertexConfig = rootVertexConfig
   .configureDownstreamVertex({
     slice,
-    upstreamFields: ["verduxGraph"],
+    upstreamFields: ["graphStructure", "lastRunOutput"],
   })
-  .computeFromFields(["verduxGraph"], {
-    flowGraph: ({ verduxGraph }) => computeFlowGraph(verduxGraph),
+  .computeFromFields(["graphStructure", "lastRunOutput"], {
+    flowGraph: ({ graphStructure, lastRunOutput }) =>
+      computeFlowGraph(graphStructure, lastRunOutput),
   });
