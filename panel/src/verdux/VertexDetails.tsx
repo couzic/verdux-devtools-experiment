@@ -11,7 +11,15 @@ const vertex = graph.getVertexInstance(vertexDetailsVertexConfig);
 export const VertexDetails = loadableComponent(
   vertex.pick(["focusedVertex"]),
   ({ focusedVertex }) => (
-    <div style={{ width: "calc(35vw - 1px)", borderLeft: "solid 1px black" }}>
+    <div
+      style={{
+        width: "35vw",
+        color: "white",
+        overflowY: "auto",
+        overflowX: "clip",
+        textOverflow: "ellipsis",
+      }}
+    >
       <h2>Vertex: {focusedVertex?.name}</h2>
 
       <div>

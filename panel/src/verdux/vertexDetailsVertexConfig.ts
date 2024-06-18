@@ -10,16 +10,19 @@ const slice = createSlice({
 export const vertexDetailsVertexConfig = rootVertexConfig
   .configureDownstreamVertex({
     slice,
-    upstreamFields: ["graphStructure", "lastRunOutput", "focusedVertexId"],
+    upstreamFields: ["graphStructure", "currentRunOutput", "focusedVertexId"],
   })
-  .computeFromFields(["graphStructure", "lastRunOutput", "focusedVertexId"], {
-    focusedVertex: ({ graphStructure, lastRunOutput, focusedVertexId }) =>
-      !focusedVertexId
-        ? undefined
-        : {
-            name: graphStructure.vertices.filter(
-              (_) => _.id === focusedVertexId
-            )[0].name,
-            fields: lastRunOutput.fieldsByVertexId[focusedVertexId],
-          },
-  });
+  .computeFromFields(
+    ["graphStructure", "currentRunOutput", "focusedVertexId"],
+    {
+      focusedVertex: ({ graphStructure, currentRunOutput, focusedVertexId }) =>
+        !focusedVertexId
+          ? undefined
+          : {
+              name: graphStructure.vertices.filter(
+                (_) => _.id === focusedVertexId
+              )[0].name,
+              fields: currentRunOutput.data.fieldsByVertexId[focusedVertexId],
+            },
+    }
+  );

@@ -13,19 +13,21 @@ const initialGraphStructure: SerializedGraphStructure = {
 
 const initialGraphRun: SerializedGraphRunOutput = {
   action: undefined,
-  initialRun: false,
+  initialRun: true,
   reactions: [],
   fieldsReactions: [],
   reduxStateByVertexId: {},
   fieldsByVertexId: {},
   changedFieldsByVertexId: {},
+  sideEffects: [],
 };
 
 const slice = createSlice({
   name: "root",
   initialState: {
     graphStructure: initialGraphStructure,
-    lastRunOutput: initialGraphRun,
+    currentRunOutput: { data: initialGraphRun, version: 1 },
+    latestVersion: 1,
     focusedVertexId: undefined as string | undefined,
   },
   reducers: {
@@ -35,11 +37,18 @@ const slice = createSlice({
     ) => {
       state.graphStructure = action.payload;
     },
-    setLastRunOutput: (
+    setCurrentRunOutput: (
       state,
-      action: PayloadAction<SerializedGraphRunOutput>
+      action: PayloadAction<{
+        data: SerializedGraphRunOutput;
+        version: number;
+      }>
     ) => {
-      state.lastRunOutput = action.payload;
+      state.currentRunOutput = action.payload;
+      const { version } = action.payload;
+      if (state.latestVersion < version) {
+        state.latestVersion = version;
+      }
     },
     focusVertex: (state, action: PayloadAction<VertexId>) => {
       state.focusedVertexId = action.payload;
@@ -51,5 +60,5 @@ export const rootVertexConfig = configureRootVertex({
   slice,
 });
 
-export const { setGraphStructure, setLastRunOutput, focusVertex } =
+export const { setGraphStructure, setCurrentRunOutput, focusVertex } =
   slice.actions;

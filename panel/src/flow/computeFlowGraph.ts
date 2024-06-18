@@ -37,8 +37,10 @@ export const computeFlowGraph = (
         ? undefined
         : "output",
       style: {
-        borderColor: colorByStatus[status],
-        borderWidth: 2,
+        color: "white",
+        backgroundColor: colorByStatus[status],
+        borderWidth: 0,
+        borderRadius: 6,
       },
     };
   });

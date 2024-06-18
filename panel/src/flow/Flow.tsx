@@ -15,7 +15,12 @@ const onNodeClick: NodeMouseHandler = (_, node) =>
 export const Flow = loadableComponent(
   vertex.pick(["flowGraph"]),
   ({ flowGraph: { nodes, edges } }) => (
-    <div style={{ width: "65vw", height: "100vh" }}>
+    <div
+      style={{
+        width: "calc(65vw - 3px)",
+        borderRight: "3px double rgba(190, 190, 190, 0.5)",
+      }}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
