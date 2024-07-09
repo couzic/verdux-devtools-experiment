@@ -15,8 +15,10 @@ const __createVerduxDevTools__ = () => {
   );
 
   let forceGraphRunOutput;
+  let serializeGraphRunData;
 
-  const dispatchGraphRunOutput = (data, version) => {
+  const dispatchGraphRunOutput = (runOutput, version) => {
+    const data = serializeGraphRunData(runOutput);
     document.dispatchEvent(
       new CustomEvent("__VERDUX_CUSTOM_EVENT_MAIN_TO_ISOLATED__", {
         detail: {
@@ -44,6 +46,9 @@ const __createVerduxDevTools__ = () => {
     },
     provideForceGraphRunOutput(f) {
       forceGraphRunOutput = f;
+    },
+    provideSerializeGraphRunData(f) {
+      serializeGraphRunData = f;
     },
   };
 };

@@ -1,4 +1,4 @@
-import { SerializedGraphRunOutput, SerializedGraphStructure } from "verdux";
+import { SerializedGraphRunData, SerializedGraphStructure } from "verdux";
 
 export type Message =
   | {
@@ -7,5 +7,5 @@ export type Message =
     }
   | {
       type: "graphRunOutput";
-      payload: { data: SerializedGraphRunOutput; version: number };
+      payload: { data: SerializedGraphRunData; version: number };
     };

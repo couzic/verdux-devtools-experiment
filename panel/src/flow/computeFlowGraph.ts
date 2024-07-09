@@ -1,5 +1,5 @@
 import { keys } from "ramda";
-import { SerializedGraphRunOutput, SerializedGraphStructure } from "verdux";
+import { SerializedGraphRunData, SerializedGraphStructure } from "verdux";
 import { colorByStatus } from "../common/colorByStatus";
 import { computeDagreGraph } from "../dagre/computeDagreGraph";
 import { VertexId } from "../verdux/VertexId";
@@ -7,7 +7,7 @@ import { FlowEdge, FlowGraph, FlowNode } from "./FlowGraph";
 
 export const computeFlowGraph = (
   structure: SerializedGraphStructure,
-  runOutput: SerializedGraphRunOutput
+  runOutput: SerializedGraphRunData
 ): FlowGraph => {
   const dagreGraph = computeDagreGraph(structure);
 

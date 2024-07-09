@@ -1,6 +1,6 @@
 import { keys } from "ramda";
 import { FC } from "react";
-import { VertexFieldState } from "verdux/lib/state/VertexFieldState";
+import { SerializedVertexFieldState } from "verdux";
 import { colorByStatus } from "../common/colorByStatus";
 import { loadableComponent } from "../util/loadableComponent";
 import { graph } from "./graph";
@@ -36,10 +36,10 @@ export const VertexDetails = loadableComponent(
   )
 );
 
-const FieldDetails: FC<{ name: string; state: VertexFieldState }> = ({
-  name,
-  state: { status, value, errors },
-}) => (
+const FieldDetails: FC<{
+  name: string;
+  state: SerializedVertexFieldState;
+}> = ({ name, state: { status, value, errors } }) => (
   <div
     style={{
       border: "1px solid gray",
@@ -64,6 +64,17 @@ const FieldDetails: FC<{ name: string; state: VertexFieldState }> = ({
       </span>
     </div>
     {status === "loaded" && <div>Value: {JSON.stringify(value)}</div>}
-    {status === "error" && <div>Errors: {errors.join(", ")}</div>}
+    {status === "error" && (
+      <div>
+        <div>Errors:</div>
+        {errors.map((error) => (
+          <>
+            <div>{error.name}</div>
+            <div>{error.message}</div>
+            {error.stack && <div>{error.stack}</div>}
+          </>
+        ))}
+      </div>
+    )}
   </div>
 );

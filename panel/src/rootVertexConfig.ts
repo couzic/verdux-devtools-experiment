@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
-  SerializedGraphRunOutput,
+  SerializedGraphRunData,
   SerializedGraphStructure,
   configureRootVertex,
 } from "verdux";
@@ -11,7 +11,7 @@ const initialGraphStructure: SerializedGraphStructure = {
   edges: [],
 };
 
-const initialGraphRun: SerializedGraphRunOutput = {
+const initialGraphRun: SerializedGraphRunData = {
   action: undefined,
   initialRun: true,
   reactions: [],
@@ -19,7 +19,6 @@ const initialGraphRun: SerializedGraphRunOutput = {
   reduxStateByVertexId: {},
   fieldsByVertexId: {},
   changedFieldsByVertexId: {},
-  sideEffects: [],
 };
 
 const slice = createSlice({
@@ -40,7 +39,7 @@ const slice = createSlice({
     setCurrentRunOutput: (
       state,
       action: PayloadAction<{
-        data: SerializedGraphRunOutput;
+        data: SerializedGraphRunData;
         version: number;
       }>
     ) => {
